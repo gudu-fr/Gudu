@@ -43,7 +43,7 @@ object DenseNN {
 
     //Input:
     var Input: Vector[Double] = Vector(0.0,0.5,-0.50, 0.12)
-    var Input2: Vector[Double] = Vector(0.0,0.5,-0.5, 0.1)
+    var Input2: Vector[Double] = Vector(01.0,0.5,-0.5, 0.1)
     var Input3: Vector[Double] = Vector(0.0,-10,0.5, 0.2)
 
     println("Computation test")
