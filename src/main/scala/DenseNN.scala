@@ -42,9 +42,9 @@ object DenseNN {
 
 
     //Input:
-    var Input: Vector[Double] = Vector(0.0,0.5,-0.5, 0.2)
-    var Input2: Vector[Double] = Vector(0.0,0.5,-0.5, 0.1)
-    var Input3: Vector[Double] = Vector(0.0,-10,0.5, 0.2)
+    var Input: Vector[Double] = Vector(10.0,0.5,-0.50, 0.12)
+    var Input2: Vector[Double] = Vector(01.0,0.5,-0.5, 0.1)
+    var Input3: Vector[Double] = Vector(0.0,-10,0.5, 0.200)
 
     println("Computation test")
     val DNN = new DenseNetwork(Vector(Input.size, 8, 16, 32, 16, 1))
