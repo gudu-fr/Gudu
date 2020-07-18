@@ -42,7 +42,7 @@ object DenseNN {
 
 
     //Input:
-    var Input: Vector[Double] = Vector(0.0,0.5,-0.5, 0.2)
+    var Input: Vector[Double] = Vector(0.0,0.5,-0.5, 0.12)
     var Input2: Vector[Double] = Vector(0.0,0.5,-0.5, 0.1)
     var Input3: Vector[Double] = Vector(0.0,-10,0.5, 0.2)
 
