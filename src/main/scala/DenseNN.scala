@@ -12,9 +12,10 @@ object DenseNN {
     var Input3: Vector[Double] = Vector(0.0,-10,0.5, 0.200)
 
     println("Computation test")
-    val DNN = new DenseNetwork(Vector(Input.size, 8, 16, 32, 16, 1))
+    var DNN = new DenseNetwork(Vector(Input.size, 8, 16, 32, 16, 6))
     println(DNN.Run(Input))
     println(DNN.Run(Input2))
     println(DNN.Run(Input3))
+    DNN.BackProp(Input, DNN.Run(Input3))
   }
 }

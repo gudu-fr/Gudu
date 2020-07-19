@@ -7,6 +7,13 @@ object gudulib {
   val fActivation = sigmoid
   val fActivationPrime = sigmoidPrime
 
+  def MSE(v: Vector[Double], w: Vector[Double]): Double = (for ((x,y)<-v zip w) yield ((x-y)*(x-y))).sum / 2
+
+  def getRandomMiniBatch(X_train:Vector[Vector[Double]], Y_train:Vector[Vector[Double]])={
+    Vector(X_train, Y_train)
+  }
+
+
   def Normalize(v: Vector[Double]):Vector[Double] = {
     val mean = v.sum / v.size
     val std = math.sqrt(v.map( x => (x - mean)*(x - mean)).sum / v.size)
@@ -31,10 +38,21 @@ object gudulib {
 
   }
 
+
+
   class DenseNetwork(arch : Vector[Int]) {
 
     val architecture: Vector[DenseLayer] = for ((n, m) <- (arch.drop(1) zip arch.dropRight(1))) yield new DenseLayer(n, m)
+    val size = architecture.length
 
     def Run(input: Vector[Double]) = architecture.foldLeft(input) { (x: Vector[Double], L: DenseLayer) => L.Compute(x, fActivation) }
+    def Run
+
+    def BackProp(x: Vector[Double], y: Vector[Double], alpha: Double =0.01 ) = {
+      val yhat =  Run(x)
+      val mserror =  MSE(yhat,y)
+
+      val delta = for ( (neur, yj) <- this.architecture.last.neurons zip y) yield fActivationPrime(neur.weights)
+    }
   }
 }
