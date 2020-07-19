@@ -22,9 +22,10 @@ object gudulib {
 
   class Neuron(nbLinked: Int) {
     var weights: Vector[Double] = Normalize((for (i <- 1 to nbLinked) yield rand.nextDouble()).to(Vector))
-    var bias: Double = -1 + 2*rand.nextDouble()
-    def Compute(input : Vector[Double], Activation: Double => Double):Double = {
-      Activation((for ((x,y)<-Normalize(input) zip weights) yield x*y).sum  + bias)
+    var output: Double = 0
+    def Compute(input : Vector[Double]):Double = {
+      output = (for ((x,y)<-input zip weights) yield x*y).sum
+      output
     }
   }
 
@@ -32,11 +33,13 @@ object gudulib {
     val size = nbNeurons
     var neurons : Vector[Neuron] = (for (i <- 1 to nbNeurons) yield new Neuron(nbPrevNeurons)).to(Vector)
 
-    def Compute(input: Vector[Double], Activation: Double => Double): Vector[Double] = {
-      for (neuron <- neurons) yield neuron.Compute(input, Activation)
+    def Compute(input: Vector[Double]): Vector[Double] = {
+      for (neuron <- neurons) yield neuron.Compute(input)
     }
 
-  }
+    def Activate(input: Vector[Double], Activation: Double => Double) =
+      this.Compute(input).map(Activation(_))
+    }
 
 
 
@@ -45,14 +48,16 @@ object gudulib {
     val architecture: Vector[DenseLayer] = for ((n, m) <- (arch.drop(1) zip arch.dropRight(1))) yield new DenseLayer(n, m)
     val size = architecture.length
 
-    def Run(input: Vector[Double]) = architecture.foldLeft(input) { (x: Vector[Double], L: DenseLayer) => L.Compute(x, fActivation) }
-    def Run
+    def Prop(input: Vector[Double]) = architecture.scanLeft(input) { (x: Vector[Double], L: DenseLayer) => L.Activate(x, fActivation)}
+
+    def Run(input: Vector[Double])= this.Prop(input).last
 
     def BackProp(x: Vector[Double], y: Vector[Double], alpha: Double =0.01 ) = {
-      val yhat =  Run(x)
-      val mserror =  MSE(yhat,y)
+      val aj =  Prop(x)
+      val enj = architecture.map(_.neurons.map(_.output))
+      val mserror =  MSE(aj.last,y)
 
-      val delta = for ( (neur, yj) <- this.architecture.last.neurons zip y) yield fActivationPrime(neur.weights)
+      //val delta = for ( (neur, yj) <- this.architecture.last.neurons zip y) yield fActivationPrime(neur.weights)
     }
   }
 }

@@ -13,6 +13,7 @@ object DenseNN {
 
     println("Computation test")
     var DNN = new DenseNetwork(Vector(Input.size, 8, 16, 32, 16, 6))
+    println(DNN.Prop(Input))
     println(DNN.Run(Input))
     println(DNN.Run(Input2))
     println(DNN.Run(Input3))
